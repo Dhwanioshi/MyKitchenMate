@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mykitchenapp/screens/Categories/category.dart';
 
-import 'package:mykitchenapp/home_page.dart';
-import 'package:mykitchenapp/startup/signup.dart';
-import 'package:mykitchenapp/styling/appbar.dart';
-import 'package:mykitchenapp/styling/text_enter.dart';
+import 'package:mykitchenapp/screens/home_page.dart';
+import 'package:mykitchenapp/screens/startup/signup.dart';
+
+import 'package:mykitchenapp/widgets/appbar.dart';
+import 'package:mykitchenapp/widgets/text_enter.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -34,7 +36,7 @@ class _LoginState extends State<Login> {
             ),
             ListTile(
               title: const Text(
-                "Remeber me",
+                "Remember me",
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
               leading: Checkbox(
@@ -55,7 +57,9 @@ class _LoginState extends State<Login> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const HomePage(),
+                    builder: (context) => const Category(
+                      title: "Categories",
+                    ),
                   ),
                 );
               },

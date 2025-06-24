@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mykitchenapp/startup/login.dart';
-import 'package:mykitchenapp/styling/appbar.dart';
-import 'package:mykitchenapp/styling/text_enter.dart';
+import 'package:mykitchenapp/screens/startup/login.dart';
+import 'package:mykitchenapp/widgets/appbar.dart';
+import 'package:mykitchenapp/widgets/text_enter.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});

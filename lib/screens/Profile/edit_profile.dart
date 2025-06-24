@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mykitchenapp/styling/appbar.dart';
+import 'package:mykitchenapp/widgets/appbar.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});

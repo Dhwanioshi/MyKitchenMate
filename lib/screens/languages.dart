@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mykitchenapp/startup/login.dart';
-import 'package:mykitchenapp/styling/appbar.dart';
+import 'package:mykitchenapp/screens/startup/login.dart';
+import 'package:mykitchenapp/widgets/appbar.dart';
 
 class Languages extends StatefulWidget {
   const Languages({super.key});

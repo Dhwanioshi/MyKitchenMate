@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mykitchenapp/languages.dart';
+import 'package:mykitchenapp/screens/languages.dart';
 
-// import 'package:kitchen_mate/languages.dart';
-
-class IntroPage extends StatefulWidget {
+class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
 
-  @override
-  State<IntroPage> createState() => _IntroPageState();
-}
-
-class _IntroPageState extends State<IntroPage> {
-  void temp() {
+  void entryPoint(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
@@ -25,7 +18,9 @@ class _IntroPageState extends State<IntroPage> {
     return Scaffold(
       body: Center(
         child: InkWell(
-          onTap: temp,
+          onTap: (){
+            entryPoint(context);
+          },
           child: Image.asset(
             'assets/images/Logo.png',
           ),
