@@ -6,14 +6,14 @@ class TrendingRecipesPage extends StatelessWidget {
 
   final List<TrendingRecipe> recipes = [
     TrendingRecipe(
-      title: 'Flan',
-      description: 'Delicious slices of bread',
+      title: 'Tiramisu',
+      description: 'Delicious item Tiramisu',
       imagePath: 'assets/images/Trending/Tiramisu.jpg',
       time: '30min',
       energy: 480,
       protein: 30,
       sugar: 4,
-      chef: 'Chef Binod',
+      chef: 'Chef Nishu',
       note: 'Contains Dairy',
     ),
     TrendingRecipe(
