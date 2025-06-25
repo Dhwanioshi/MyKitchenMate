@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mykitchenapp/trending_recipe_template.dart';
+import 'package:mykitchenapp/Trending_Page/trending_recipe_template.dart';
 
 class TrendingRecipesPage extends StatelessWidget {
   TrendingRecipesPage({super.key});

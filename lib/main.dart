@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:mykitchenapp/screens/startup/intro_page.dart';
-import 'package:mykitchenapp/trending_page.dart';
+// import 'package:mykitchenapp/Trending_Page/trending_page.dart';
+import 'package:mykitchenapp/Calendar/calendar.dart';
 
 void main() {
   runApp(
@@ -14,7 +15,8 @@ void main() {
         ),
       ),
       // home: const IntroPage(),
-      home: TrendingRecipesPage(),
+      // home: TrendingRecipesPage(),
+      home: const PlanYourDayScreen(),
     ),
   );
 }
