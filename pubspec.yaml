@@ -78,6 +78,7 @@ flutter:
     - assets/images/Traditionals/Punjabi.png
     - assets/images/Traditionals/South.png
     - assets/images/Traditionals/Rajasthani.png
+    - assets/images/Trending/Tiramisu.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
