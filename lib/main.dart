@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:mykitchenapp/screens/startup/intro_page.dart';
 // import 'package:mykitchenapp/Trending_Page/trending_page.dart';
-import 'package:mykitchenapp/Calendar/calendar.dart';
+import 'package:mykitchenapp/screens/Calendar/calendar.dart';
 
 void main() {
   runApp(

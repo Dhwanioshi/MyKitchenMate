@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mykitchenapp/Trending_Page/trending_recipe_template.dart';
+import 'package:mykitchenapp/screens/Trending_Page/trending_recipe_template.dart';
+import 'package:mykitchenapp/styling/navigation.dart';
 
 class TrendingRecipesPage extends StatelessWidget {
   TrendingRecipesPage({super.key});
@@ -153,17 +154,18 @@ class TrendingRecipesPage extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 35, 135, 40),
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.white60,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.camera_alt_outlined), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.receipt_long), label: ''),
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   backgroundColor: const Color.fromARGB(255, 35, 135, 40),
+      //   selectedItemColor: Colors.black,
+      //   unselectedItemColor: Colors.white60,
+      //   items: const [
+      //     BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: ''),
+      //     BottomNavigationBarItem(icon: Icon(Icons.camera_alt_outlined), label: ''),
+      //     BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: ''),
+      //     BottomNavigationBarItem(icon: Icon(Icons.receipt_long), label: ''),
+      //   ],
+      // ),
+      bottomNavigationBar: Navigation(),
     );
   }
 }

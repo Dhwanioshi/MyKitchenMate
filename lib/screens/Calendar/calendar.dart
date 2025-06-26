@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mykitchenapp/screens/Categories/category.dart';
-import 'package:mykitchenapp/calendar/RecipeCard.dart';
-import 'package:mykitchenapp/bottom_navigation.dart';
+import 'package:mykitchenapp/screens/calendar/RecipeCard.dart';
+// import 'package:mykitchenapp/bottom_navigation.dart';
+import 'package:mykitchenapp/styling/navigation.dart';
 
 class PlanYourDayScreen extends StatefulWidget {
   const PlanYourDayScreen({super.key});
@@ -182,11 +183,12 @@ class _PlanYourDayScreenState extends State<PlanYourDayScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigation(currentIndex: index, onTap: (index) {
-        setState(() {
-          this.index = index;
-        });
-      }),
+      // bottomNavigationBar: BottomNavigation(currentIndex: index, onTap: (index) {
+      //   setState(() {
+      //     this.index = index;
+      //   });
+      // }),
+      bottomNavigationBar: Navigation(),
     );
   }
 
