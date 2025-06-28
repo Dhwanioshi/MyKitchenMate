@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mykitchenapp/screens/Calendar/recipecard.dart';
+import 'package:mykitchenapp/screens/Calendar/RecipeCard.dart';
 import 'package:mykitchenapp/screens/Categories/category.dart';
 
 class PlanYourDayScreen extends StatefulWidget {
