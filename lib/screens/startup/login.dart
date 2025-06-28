@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mykitchenapp/screens/Categories/category.dart';
+import 'package:mykitchenapp/bottom_navigation.dart';
 
 // import 'package:mykitchenapp/screens/home_page.dart';
 import 'package:mykitchenapp/screens/startup/signup.dart';
@@ -27,13 +27,9 @@ class _LoginState extends State<Login> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const TextEnter("Email", "example@gmail.com"),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             const TextEnter("Password", "Password"),
-            const SizedBox(
-              height: 15,
-            ),
+            const SizedBox(height: 15),
             ListTile(
               title: const Text(
                 "Remember me",
@@ -49,18 +45,12 @@ class _LoginState extends State<Login> {
                 },
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const Category(
-                      title: "Categories",
-                    ),
-                  ),
+                  MaterialPageRoute(builder: (context) => Navigate()),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -76,16 +66,12 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const Signup(),
-                  ),
+                  MaterialPageRoute(builder: (context) => const Signup()),
                 );
               },
               style: ElevatedButton.styleFrom(

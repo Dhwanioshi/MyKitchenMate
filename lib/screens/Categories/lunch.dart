@@ -41,7 +41,7 @@ class _LunchPageState extends State<LunchPage> {
     return Scaffold(
       appBar: CustomAppbar(title),
       body: Padding(
-        padding: const EdgeInsets.only(top: 30.0, left: 15, right: 15),
+        padding: const EdgeInsets.only(top: 30.0, left: 10, right: 10),
         child: Column(
           children: [
             SingleChildScrollView(

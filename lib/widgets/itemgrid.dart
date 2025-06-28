@@ -3,19 +3,26 @@ import 'package:mykitchenapp/modals/recipe_model.dart';
 import 'package:mykitchenapp/screens/itemdetail.dart';
 
 class Itemgrid extends StatelessWidget {
-  const Itemgrid({super.key, required this.selectedRecipes});
+  const Itemgrid({super.key, required this.selectedRecipes, this.currentPage});
   final List<RecipeModel> selectedRecipes;
-
+  final String? currentPage;
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      padding: const EdgeInsets.only(top: 20, bottom: 20),
+      padding: currentPage == "Home"
+          ? const EdgeInsets.symmetric(horizontal: 10)
+          : const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 0.70,
+        childAspectRatio: 0.65,
         crossAxisSpacing: 5,
-        mainAxisSpacing: 10,
+        mainAxisSpacing: 5,
       ),
+
+      physics: currentPage == "Home"
+          ? const NeverScrollableScrollPhysics()
+          : null,
+      shrinkWrap: currentPage == "Home" ? true : false,
       itemCount: selectedRecipes.length,
       itemBuilder: (context, index) {
         return InkWell(
@@ -23,22 +30,20 @@ class Itemgrid extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ItemDetailPage(
-                  recipe: selectedRecipes[index],
-                ),
+                builder: (context) =>
+                    ItemDetailPage(recipe: selectedRecipes[index]),
               ),
             );
           },
           child: Stack(
             children: [
               Positioned(
-                bottom: 0,
+                bottom: 15,
                 left: 0,
                 right: 0,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 9.0, right: 9),
                   child: Container(
-                    height: 135,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -49,7 +54,7 @@ class Itemgrid extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(
-                        top: 35,
+                        top: 40,
                         left: 10,
                         right: 10,
                       ),
@@ -59,9 +64,10 @@ class Itemgrid extends StatelessWidget {
                           Text(
                             selectedRecipes[index].name,
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                overflow: TextOverflow.ellipsis),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                             maxLines: 1,
                           ),
                           const SizedBox(height: 2),
@@ -78,31 +84,31 @@ class Itemgrid extends StatelessWidget {
                           Opacity(
                             opacity: 0.7,
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
+                                const Icon(
+                                  Icons.star_rate_rounded,
+                                  size: 18,
+                                  color: Colors.grey,
+                                ),
                                 Text(
                                   selectedRecipes[index].rating.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 13,
-                                  ),
+                                  style: const TextStyle(fontSize: 13),
                                 ),
-                                const SizedBox(width: 4),
-                                const Icon(Icons.star_rate_rounded,
-                                    size: 18, color: Colors.grey),
-                                const SizedBox(width: 16),
+                                const SizedBox(width: 15),
+                                
+                                Text(
+                                  selectedRecipes[index].time,
+                                  style: const TextStyle(fontSize: 13),
+                                ),
                                 const Icon(
                                   Icons.timer_outlined,
                                   size: 18,
                                   color: Colors.grey,
                                 ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  selectedRecipes[index].time,
-                                  style: const TextStyle(fontSize: 13),
-                                ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
