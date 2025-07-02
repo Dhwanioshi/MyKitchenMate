@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mykitchenapp/screens/Trending_Page/trending_recipe_template.dart';
-import 'package:mykitchenapp/styling/navigation.dart';
+import 'package:mykitchenapp/widgets/appbar.dart';
+
 
 class TrendingRecipesPage extends StatelessWidget {
   TrendingRecipesPage({super.key});
@@ -44,20 +45,7 @@ class TrendingRecipesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFDFDF9),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: const Icon(Icons.arrow_back, color: Colors.black87),
-        title: const Text('Trending', style: TextStyle(color: Colors.black87)),
-        centerTitle: true,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 12),
-            child: Icon(Icons.close, color: Colors.black87),
-          )
-        ],
-      ),
+      appBar: CustomAppbar("Trendings"),
       body: PageView.builder(
         itemCount: recipes.length,
         itemBuilder: (context, index) {
@@ -87,50 +75,58 @@ class TrendingRecipesPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(recipe.title,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18)),
+                      Text(
+                        recipe.title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
                       const SizedBox(height: 4),
-                      Text(recipe.description,
-                          style: const TextStyle(color: Colors.grey)),
+                      Text(
+                        recipe.description,
+                        style: const TextStyle(color: Colors.grey),
+                      ),
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          const Icon(Icons.timer,
-                              size: 16, color: Colors.grey),
+                          const Icon(Icons.timer, size: 16, color: Colors.grey),
                           const SizedBox(width: 4),
-                          Text(recipe.time,
-                              style: const TextStyle(color: Colors.grey)),
+                          Text(
+                            recipe.time,
+                            style: const TextStyle(color: Colors.grey),
+                          ),
                           const Spacer(),
                           const Row(
                             children: [
-                              Icon(Icons.star,
-                                  color: Colors.green, size: 20),
-                              Icon(Icons.star,
-                                  color: Colors.green, size: 20),
-                              Icon(Icons.star,
-                                  color: Colors.green, size: 20),
-                              Icon(Icons.star,
-                                  color: Colors.green, size: 20),
-                              Icon(Icons.star,
-                                  color: Colors.green, size: 20),
+                              Icon(Icons.star, color: Colors.green, size: 20),
+                              Icon(Icons.star, color: Colors.green, size: 20),
+                              Icon(Icons.star, color: Colors.green, size: 20),
+                              Icon(Icons.star, color: Colors.green, size: 20),
+                              Icon(Icons.star, color: Colors.green, size: 20),
                             ],
                           ),
                         ],
                       ),
                       const SizedBox(height: 12),
-                      const Text('Nutritions',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      const Text(
+                        'Nutritions',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       const SizedBox(height: 4),
                       Text(
-                          'Energy ${recipe.energy} Kcal\nProtein ${recipe.protein}g\nSugar ${recipe.sugar}g'),
+                        'Energy ${recipe.energy} Kcal\nProtein ${recipe.protein}g\nSugar ${recipe.sugar}g',
+                      ),
                       const SizedBox(height: 8),
-                      Text('Recipe By ${recipe.chef}',
-                          style: const TextStyle(
-                              fontStyle: FontStyle.italic)),
+                      Text(
+                        'Recipe By ${recipe.chef}',
+                        style: const TextStyle(fontStyle: FontStyle.italic),
+                      ),
                       const SizedBox(height: 4),
-                      Text(recipe.note,
-                          style: const TextStyle(color: Colors.redAccent)),
+                      Text(
+                        recipe.note,
+                        style: const TextStyle(color: Colors.redAccent),
+                      ),
                       const SizedBox(height: 16),
                       Center(
                         child: ElevatedButton(
@@ -138,14 +134,19 @@ class TrendingRecipesPage extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green.shade700,
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 32, vertical: 12),
+                              horizontal: 32,
+                              vertical: 12,
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(24),
                             ),
                           ),
-                          child: const Text('Cook This'),
+                          child: const Text(
+                            'Cook This',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -154,18 +155,7 @@ class TrendingRecipesPage extends StatelessWidget {
           );
         },
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   backgroundColor: const Color.fromARGB(255, 35, 135, 40),
-      //   selectedItemColor: Colors.black,
-      //   unselectedItemColor: Colors.white60,
-      //   items: const [
-      //     BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: ''),
-      //     BottomNavigationBarItem(icon: Icon(Icons.camera_alt_outlined), label: ''),
-      //     BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: ''),
-      //     BottomNavigationBarItem(icon: Icon(Icons.receipt_long), label: ''),
-      //   ],
-      // ),
-      bottomNavigationBar: Navigation(),
+
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mykitchenapp/dummy_data/sample_recipes.dart';
 import 'package:mykitchenapp/screens/languages.dart';
 import 'package:mykitchenapp/screens/settings/history.dart';
 import 'package:mykitchenapp/screens/startup/intro_page.dart';
@@ -12,7 +13,6 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = [
-      {"icon": Icons.history, "text": "History"},
       {"icon": Icons.help_outline, "text": "Help Center"},
       {"icon": Icons.privacy_tip_outlined, "text": "Privacy Policy"},
       {"icon": Icons.language, "text": "Language"},
@@ -36,66 +36,69 @@ class SettingsScreen extends StatelessWidget {
                         ? Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (ctx) => const History(),
+                              builder: (ctx) => History(
+                                title: "History",
+                                listOfRecipes: dummyRecipes,
+                              ),
                             ),
                           )
                         : item["text"] == "Language"
-                            ? Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (ctx) => const Languages(),
-                                ),
-                              )
-                            : item["text"] == "Log Out"
-                                ? showDialog(
-                                    context: context,
-                                    builder: (ctx) => AlertDialog(
-                                      title: const Text("Log Out"),
-                                      content: const Text(
-                                          "Are you sure you want to log out?"),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(ctx);
-                                          },
-                                          child: Text(
-                                            "Cancel",
-                                            style: GoogleFonts.poppins(
-                                              color: const Color.fromARGB(
-                                                  255, 0, 0, 0),
-                                            ),
-                                          ),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(ctx);
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (ctx) =>
-                                                    const IntroPage(),
-                                              ),
-                                            );
-                                          },
-                                          child: Text(
-                                            "Log Out",
-                                            style: GoogleFonts.poppins(
-                                              color: const Color.fromARGB(
-                                                  255, 0, 0, 0),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => const Languages(),
+                            ),
+                          )
+                        : item["text"] == "Log Out"
+                        ? showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text("Log Out"),
+                              content: const Text(
+                                "Are you sure you want to log out?",
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(ctx);
+                                  },
+                                  child: Text(
+                                    "Cancel",
+                                    style: GoogleFonts.poppins(
+                                      color: const Color.fromARGB(255, 0, 0, 0),
                                     ),
-                                  )
-                                : null;
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(ctx);
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (ctx) => const IntroPage(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    "Log Out",
+                                    style: GoogleFonts.poppins(
+                                      color: const Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : null;
                   },
                   child: Row(
                     children: [
                       CircleAvatar(
                         backgroundColor: const Color.fromRGBO(86, 106, 79, 1),
-                        child:
-                            Icon(item["icon"] as IconData, color: Colors.white),
+                        child: Icon(
+                          item["icon"] as IconData,
+                          color: Colors.white,
+                        ),
                       ),
                       const SizedBox(width: 15),
                       Expanded(
@@ -126,7 +129,8 @@ class SettingsScreen extends StatelessWidget {
                   builder: (ctx) => AlertDialog(
                     title: const Text("Delete Account"),
                     content: const Text(
-                        "Are you sure you want to delete your account? This action cannot be undone."),
+                      "Are you sure you want to delete your account? This action cannot be undone.",
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () {
@@ -150,9 +154,7 @@ class SettingsScreen extends StatelessWidget {
                         },
                         child: Text(
                           "Delete",
-                          style: GoogleFonts.poppins(
-                            color: Colors.red,
-                          ),
+                          style: GoogleFonts.poppins(color: Colors.red),
                         ),
                       ),
                     ],
@@ -167,7 +169,7 @@ class SettingsScreen extends StatelessWidget {
                   color: const Color.fromRGBO(86, 106, 79, 1),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

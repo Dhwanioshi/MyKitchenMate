@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mykitchenapp/screens/Calendar/RecipeCard.dart';
 import 'package:mykitchenapp/screens/Categories/category.dart';
-import 'package:mykitchenapp/screens/calendar/RecipeCard.dart';
-// import 'package:mykitchenapp/bottom_navigation.dart';
-import 'package:mykitchenapp/styling/navigation.dart';
 
 class PlanYourDayScreen extends StatefulWidget {
   const PlanYourDayScreen({super.key});
@@ -64,10 +62,7 @@ class _PlanYourDayScreenState extends State<PlanYourDayScreen> {
               ),
               const SizedBox(height: 8),
               // Month display
-              Text(
-                currMonth,
-                style: const TextStyle(fontSize: 18),
-              ),
+              Text(currMonth, style: const TextStyle(fontSize: 18)),
               const SizedBox(height: 8),
               // Horizontal calendar view (week view)
               SizedBox(
@@ -78,7 +73,8 @@ class _PlanYourDayScreenState extends State<PlanYourDayScreen> {
                   itemCount: 7,
                   itemBuilder: (context, index) {
                     final date = weekDates[index];
-                    final isSelected = date.day == selectedDate.day &&
+                    final isSelected =
+                        date.day == selectedDate.day &&
                         date.month == selectedDate.month &&
                         date.year == selectedDate.year;
 
@@ -183,12 +179,6 @@ class _PlanYourDayScreenState extends State<PlanYourDayScreen> {
           ),
         ],
       ),
-      // bottomNavigationBar: BottomNavigation(currentIndex: index, onTap: (index) {
-      //   setState(() {
-      //     this.index = index;
-      //   });
-      // }),
-      bottomNavigationBar: Navigation(),
     );
   }
 
@@ -199,7 +189,18 @@ class _PlanYourDayScreenState extends State<PlanYourDayScreen> {
 
   String _getMonthName(int month) {
     const months = [
-      'January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
     return months[month - 1];
   }
