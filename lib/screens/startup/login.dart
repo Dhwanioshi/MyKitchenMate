@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mykitchenapp/screens/Categories/category.dart';
-
-// import 'package:mykitchenapp/screens/home_page.dart';
+// import 'package:mykitchenapp/screens/Categories/category.dart';
+import 'package:mykitchenapp/screens/home_page.dart';
 import 'package:mykitchenapp/screens/startup/signup.dart';
-
 import 'package:mykitchenapp/widgets/appbar.dart';
 import 'package:mykitchenapp/widgets/text_enter.dart';
 
@@ -57,9 +55,10 @@ class _LoginState extends State<Login> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const Category(
-                      title: "Categories",
-                    ),
+                    // builder: (context) => const Category(
+                    //   title: "Categories",
+                    // ),
+                    builder: (context) => HomePage(),
                   ),
                 );
               },

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+// import 'package:flutter/widgets.dart';
+import 'package:mykitchenapp/styling/navigation.dart';
+import 'package:mykitchenapp/screens/Trending_Page/trending_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +18,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 40),
+            padding: const EdgeInsets.only(left: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -28,14 +30,17 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 25,
                   ),
                 ),
-                const Text(
-                  "What are you cooking today?",
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
+                const Text("What are you cooking today?"),
+                const SizedBox(height: 20),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TrendingRecipesPage(),
+                      ),
+                    );
+                  },
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -55,16 +60,13 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                Card(
-                  child: Image.asset(
-                    'aasets/images/pizza photo.jpg',
-                  ),
-                ),
+                Card(child: Image.asset('assets/images/Categories/Dinner.png')),
               ],
             ),
           ),
         ],
       ),
+      bottomNavigationBar: Navigation(),
     );
   }
 }
