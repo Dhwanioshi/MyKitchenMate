@@ -10,13 +10,17 @@ class History extends StatelessWidget {
   final List<RecipeModel> listOfRecipes;
   @override
   Widget build(BuildContext context) {
+    int size = listOfRecipes.length;
     return Scaffold(
-      appBar: CustomAppbar(
-        title,
-      ),
-      body: Itemgrid(
-        selectedRecipes: listOfRecipes,
-      ),
+      appBar: CustomAppbar(title),
+      body: size != 0
+          ? Itemgrid(selectedRecipes: listOfRecipes)
+          : Center(
+              child: Text(
+                "No Recipe Selected",
+                style: TextStyle(color: Color.fromRGBO(86, 106, 79, 1)),
+              ),
+            ),
     );
   }
 }

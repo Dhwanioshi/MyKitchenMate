@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:mykitchenapp/providers/favs.dart';
 import '../modals/recipe_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ItemDetailPage extends StatelessWidget {
-  const ItemDetailPage({super.key, required this.recipe});
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+class ItemDetailPage extends ConsumerStatefulWidget {
+  const ItemDetailPage({super.key, required this.recipe});
   final RecipeModel recipe;
   @override
+  ConsumerState<ItemDetailPage> createState() => _ItemDetailPageState();
+}
+
+class _ItemDetailPageState extends ConsumerState<ItemDetailPage> {
+  @override
   Widget build(BuildContext context) {
-    // final  = recipe.name;
+    final recipe = widget.recipe;
+    bool wasAdded = ref.read(favouritesProvider).contains(recipe);
     const greenColor = Color.fromRGBO(86, 106, 79, 1);
     const yellowColor = Color.fromRGBO(236, 200, 86, 1);
 
@@ -20,11 +28,7 @@ class ItemDetailPage extends StatelessWidget {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: const Icon(
-              Icons.arrow_back,
-              color: greenColor,
-              size: 30,
-            ),
+            icon: const Icon(Icons.arrow_back, color: greenColor, size: 30),
           ),
         ),
         centerTitle: true,
@@ -35,14 +39,32 @@ class ItemDetailPage extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: InkWell(
-              onTap: null,
+              onTap: () {
+               setState(() {
+                    ref
+                        .read(favouritesProvider.notifier)
+                        .addToFav(recipe);
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          !wasAdded
+                              ? "Added to favourites"
+                              : "Removed from favourites",
+                        ),
+                      ),
+                    );
+                  });
+              },
               child: CircleAvatar(
                 radius: 15,
-                backgroundColor: Color.fromRGBO(86, 106, 79, 1),
+                backgroundColor: wasAdded
+                    ? const Color.fromARGB(255, 203, 44, 8)
+                    : Color.fromRGBO(86, 106, 79, 1),
                 child: Icon(
                   Icons.favorite_border,
                   color: Color.fromRGBO(255, 255, 255, 1),
@@ -79,13 +101,13 @@ class ItemDetailPage extends StatelessWidget {
                   alignment: AlignmentDirectional.bottomStart,
                   height: 250,
                   width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 13,
+                  ),
                   decoration: const BoxDecoration(
                     color: yellowColor,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15),
-                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
                   child: Row(
                     children: [
@@ -98,17 +120,27 @@ class ItemDetailPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Icon(Icons.star_rounded,
-                          size: 18, color: Colors.white),
+                      const Icon(
+                        Icons.star_rounded,
+                        size: 18,
+                        color: Colors.white,
+                      ),
                       const SizedBox(width: 4),
-                      Text(recipe.rating.toString(),
-                          style: const TextStyle(color: Colors.white)),
+                      Text(
+                        recipe.rating.toString(),
+                        style: const TextStyle(color: Colors.white),
+                      ),
                       const SizedBox(width: 12),
-                      const Icon(Icons.comment_outlined,
-                          size: 18, color: Colors.white),
+                      const Icon(
+                        Icons.comment_outlined,
+                        size: 18,
+                        color: Colors.white,
+                      ),
                       const SizedBox(width: 4),
-                      Text(recipe.reviews.length.toString(),
-                          style: const TextStyle(color: Colors.white)),
+                      Text(
+                        recipe.reviews.length.toString(),
+                        style: const TextStyle(color: Colors.white),
+                      ),
                     ],
                   ),
                 ),
@@ -138,21 +170,20 @@ class ItemDetailPage extends StatelessWidget {
                 Text(
                   "Details",
                   style: GoogleFonts.poppins(
-                      color: greenColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
+                    color: greenColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
                 const SizedBox(width: 10),
-                const Icon(
-                  Icons.timer_outlined,
-                  size: 13,
-                  color: Colors.black,
-                ),
+                const Icon(Icons.timer_outlined, size: 13, color: Colors.black),
                 const SizedBox(width: 4),
                 Text(
                   recipe.time,
                   style: const TextStyle(
-                      fontSize: 12, fontWeight: FontWeight.w500),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
@@ -168,21 +199,24 @@ class ItemDetailPage extends StatelessWidget {
             Text(
               "Ingredients",
               style: GoogleFonts.poppins(
-                  color: greenColor, fontWeight: FontWeight.bold, fontSize: 18),
+                color: greenColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
             ),
             const SizedBox(height: 10),
             for (String ingredient in recipe.ingredients)
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 2,
+                  horizontal: 10,
+                ),
                 child: Text(
                   "• $ingredient",
                   style: GoogleFonts.poppins(fontSize: 14),
                 ),
               ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             const Text(
               "Easy Steps",
               style: TextStyle(
@@ -205,10 +239,7 @@ class ItemDetailPage extends StatelessWidget {
                   children: [
                     const Text(
                       "• ",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(color: Colors.black, fontSize: 16),
                     ),
                     Expanded(
                       child: Text(

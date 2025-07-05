@@ -1,88 +1,103 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mykitchenapp/screens/Profile/profile_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mykitchenapp/widgets/appbar.dart';
 
-class EditProfilePage extends StatefulWidget {
+class EditProfilePage extends ConsumerStatefulWidget {
   const EditProfilePage({super.key});
 
   @override
-  State<EditProfilePage> createState() => _EditProfilePageState();
+  ConsumerState<EditProfilePage> createState() => _EditProfilePageState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController nameController = TextEditingController(
-    text: "Dhwani Joshi",
-  );
-  final TextEditingController usernameController = TextEditingController(
-    text: 'd_j229',
-  );
-  final TextEditingController phoneController = TextEditingController(
-    text: '+91 9090909090',
-  );
-  final TextEditingController emailController = TextEditingController(
-    text: 'dj193@email.com',
-  );
-
-  String selectedGender = 'Female';
-  final List<String> genderOptions = ['Male', 'Female', 'Other'];
+  late final TextEditingController nameController = TextEditingController();
+  late final TextEditingController usernameController = TextEditingController();
+  late final TextEditingController phoneController = TextEditingController();
+  late final TextEditingController emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppbar("Edit Profile"),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 48),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              const SizedBox(height: 10),
-              _buildTextField('Name', nameController),
-              const SizedBox(height: 16),
-              _buildTextField('Username', usernameController),
-              const SizedBox(height: 16),
-              _buildDropdown('Gender'),
-              const SizedBox(height: 16),
-              _buildTextField(
-                'Phone Number',
-                phoneController,
-                keyboardType: TextInputType.phone,
-              ),
-              const SizedBox(height: 16),
-              _buildTextField(
-                'Email',
-                emailController,
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(height: 32),
-              SizedBox(
-                height: 48,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(86, 106, 79, 1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+    return FutureBuilder<DocumentSnapshot>(
+      future: FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        }
+
+        if (snapshot.hasError || !snapshot.hasData || !snapshot.data!.exists) {
+          return const Scaffold(body: Center(child: Text("Failed to load user data.")));
+        }
+
+        final data = snapshot.data!.data() as Map<String, dynamic>;
+
+        nameController.text = data['name'] ?? '';
+        usernameController.text = data['username'] ?? '';
+        emailController.text = data['email'] ?? '';
+        phoneController.text = data['mobile_number'] ?? '';
+
+        return Scaffold(
+          appBar: CustomAppbar("Edit Profile"),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 48),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
+                  const SizedBox(height: 10),
+                  _buildTextField('Full Name', nameController),
+                  const SizedBox(height: 10),
+                  _buildTextField('Username', usernameController),
+                  const SizedBox(height: 16),
+                  _buildTextField('Mobile Number', phoneController,
+                      keyboardType: TextInputType.phone),
+                  const SizedBox(height: 16),
+                  
+                  const SizedBox(height: 32),
+                  SizedBox(
+                    height: 48,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromRGBO(86, 106, 79, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          final uid = FirebaseAuth.instance.currentUser!.uid;
+
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(uid)
+                              .update({
+                            'name': nameController.text,
+                            'username': usernameController.text,
+                            'mobile_number': phoneController.text,
+                          });
+
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: const Text(
+                        'Save',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
                     ),
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                        return ProfilePage();
-                      }));
-                    }
-                  },
-                  child: const Text(
-                    'Save',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -94,67 +109,30 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-        ),
-        const SizedBox(height: 6), // gap between label and field
+        Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+        const SizedBox(height: 6),
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
-          style: const TextStyle(fontSize: 14),
+          validator: (value) {
+            if (value == null || value.isEmpty || value.length <= 1 || value.length >= 50) {
+              return 'Enter a valid $label';
+            }
+            if (label == "Email" && (!value.contains('@') || !value.contains("gmail.com"))) {
+              return "Enter correct Email address";
+            }
+            if (label == "Mobile Number" && value.length != 10) {
+              return "Enter correct Mobile number";
+            }
+            return null;
+          },
           decoration: InputDecoration(
             filled: true,
             fillColor: const Color.fromARGB(100, 160, 160, 150),
-            contentPadding: const EdgeInsets.symmetric(
-              vertical: 12,
-              horizontal: 12,
-            ),
+            contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide.none,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDropdown(String label) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-        ),
-        const SizedBox(height: 6), // gap between label and field
-        InputDecorator(
-          decoration: InputDecoration(
-            filled: true,
-            isDense: true,
-            fillColor: const Color.fromARGB(100, 160, 160, 150),
-            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide.none,
-            ),
-          ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: selectedGender,
-              isExpanded: true,
-              items: genderOptions.map((String gender) {
-                return DropdownMenuItem<String>(
-                  value: gender,
-                  child: Text(gender),
-                );
-              }).toList(),
-              onChanged: (String? newGender) {
-                setState(() {
-                  selectedGender = newGender!;
-                });
-              },
             ),
           ),
         ),

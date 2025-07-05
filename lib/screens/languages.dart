@@ -4,8 +4,8 @@ import 'package:mykitchenapp/screens/startup/login.dart';
 import 'package:mykitchenapp/widgets/appbar.dart';
 
 class Languages extends StatefulWidget {
-  const Languages({super.key});
-
+  const Languages({super.key, required this.goBack});
+  final bool goBack;
   @override
   State<Languages> createState() {
     return _LanguagesState();
@@ -20,7 +20,7 @@ class _LanguagesState extends State<Languages> {
     "Gujarati",
     "Tamil",
     "Spanish",
-    "French"
+    "French",
   ];
 
   String? val = "English";
@@ -46,8 +46,9 @@ class _LanguagesState extends State<Languages> {
                       ),
                     ),
                     leading: Radio<String>(
-                      fillColor: WidgetStateProperty.resolveWith<Color>(
-                          (Set<WidgetState> states) {
+                      fillColor: WidgetStateProperty.resolveWith<Color>((
+                        Set<WidgetState> states,
+                      ) {
                         return const Color.fromRGBO(86, 106, 79, 1);
                       }),
                       value: lang,
@@ -63,12 +64,14 @@ class _LanguagesState extends State<Languages> {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Login(),
-                  ),
-                );
+                if (widget.goBack) {
+                  Navigator.pop(context);
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Login()),
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(200, 50),

@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mykitchenapp/dummy_data/sample_recipes.dart';
@@ -46,7 +48,7 @@ class SettingsScreen extends StatelessWidget {
                         ? Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (ctx) => const Languages(),
+                              builder: (ctx) => const Languages(goBack: true),
                             ),
                           )
                         : item["text"] == "Log Out"
@@ -71,7 +73,7 @@ class SettingsScreen extends StatelessWidget {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pop(ctx);
+                                    FirebaseAuth.instance.signOut();
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
@@ -144,7 +146,17 @@ class SettingsScreen extends StatelessWidget {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+
+                          final uid = FirebaseAuth.instance.currentUser!.uid;
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(uid)
+                              .delete();
+                          final user = FirebaseAuth.instance.currentUser;
+                          await user?.delete();
+                          await FirebaseAuth.instance.signOut();
+
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

@@ -123,15 +123,15 @@ class MainSearchPage extends StatelessWidget {
                               Text(
                                 "Nutritions: Energy ${dummyRecipes[1].nutrients["calories"]} Kcal, "
                                 "Protein ${dummyRecipes[1].nutrients["protein"]}, Sugar ${dummyRecipes[1].nutrients["carbs"]}",
-                                style: const TextStyle(fontSize: 11),
+                                style: const TextStyle(fontSize: 10),
                               ),
                               Text(
                                 "Cooking Time: ${dummyRecipes[1].time}",
-                                style: const TextStyle(fontSize: 11),
+                                style: const TextStyle(fontSize: 10),
                               ),
                               Text(
                                 "Recipe By: ${dummyRecipes[1].author}",
-                                style: const TextStyle(fontSize: 11),
+                                style: const TextStyle(fontSize: 10),
                               ),
                             ],
                           ),

@@ -7,9 +7,11 @@ class IntroPage extends StatelessWidget {
   void entryPoint(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) {
-        return const Languages();
-      }),
+      MaterialPageRoute(
+        builder: (context) {
+          return const Languages(goBack: false);
+        },
+      ),
     );
   }
 
@@ -18,12 +20,10 @@ class IntroPage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: InkWell(
-          onTap: (){
+          onTap: () {
             entryPoint(context);
           },
-          child: Image.asset(
-            'assets/images/Logo.png',
-          ),
+          child: Image.asset('assets/images/Logo.png'),
         ),
       ),
     );

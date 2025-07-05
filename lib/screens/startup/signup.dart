@@ -1,17 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mykitchenapp/screens/startup/login.dart';
+
+import 'package:mykitchenapp/providers/profile_dits.dart';
 import 'package:mykitchenapp/widgets/appbar.dart';
 import 'package:mykitchenapp/widgets/text_enter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Signup extends StatefulWidget {
+
+
+final firebase = FirebaseAuth.instance;
+final firestore = FirebaseFirestore.instance;
+
+
+final uid = FirebaseAuth.instance.currentUser!.uid;
+
+
+class Signup extends ConsumerStatefulWidget {
   const Signup({super.key});
   @override
-  State<Signup> createState() => _SignupState();
+  ConsumerState<Signup> createState() => _SignupState();
 }
 
-class _SignupState extends State<Signup> {
+class _SignupState extends ConsumerState<Signup> {
   bool isChecked = false;
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,41 +41,92 @@ class _SignupState extends State<Signup> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const TextEnter("Full Name", "Dhwani Joshi"),
-              const SizedBox(
-                height: 10,
-              ),
-              const TextEnter("Email", "example@gmail.com"),
-              const SizedBox(
-                height: 10,
-              ),
-              const TextEnter("Mobile Number", "+91 9898989898"),
-              const SizedBox(
-                height: 10,
-              ),
-              const TextEnter("Date Of Birth", "DD / MM / YYYY"),
-              const SizedBox(
-                height: 10,
-              ),
-              const TextEnter("Password", "password"),
-              const SizedBox(
-                height: 10,
-              ),
-              const TextEnter("Confirm Password", "confirm password"),
-              const SizedBox(
-                height: 10,
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Login(),
+              const SizedBox(height: 15),
+              Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const TextEnter("Full Name", "Dhwani Joshi"),
+                    const SizedBox(height: 5),
+                    const TextEnter("Username", ""),
+                    const SizedBox(height: 5),
+                    const TextEnter("Email", "example@gmail.com"),
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: const TextEnter("Mobile Number", "9898989898"),
+                        ),
+                        const SizedBox(width: 5),
+                        Expanded(
+                          child: const TextEnter(
+                            "Date Of Birth",
+                            "DD / MM / YYYY",
+                          ),
+                        ),
+                      ],
                     ),
-                  );
+                    const SizedBox(height: 5),
+                    TextEnter(
+                      "Password",
+                      "password",
+                      contoller: passwordController,
+                      isController: true,
+                    ),
+                    const SizedBox(height: 5),
+                    TextEnter(
+                      "Confirm Password",
+                      "confirm password",
+                      isController: true,
+                      contoller: confirmPasswordController,
+                      passwordCon: passwordController,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    final list = ref.read(profileDitsProvider);
+                    try {
+                      final userCredential = await firebase
+                          .createUserWithEmailAndPassword(
+                            email: list["Email"]!,
+                            password: list["Password"]!,
+                          );
+                      final uid = userCredential.user!.uid;
+                      await firestore.collection('users').doc(uid).set({
+                        'name': list["Full Name"] ?? "",
+                        'email': list["Email"] ?? "",
+                        'username': list["Username"] ?? "",
+                        'DOB': list["Date Of Birth"] ?? "",
+                        'mobile_number': list["Mobile Number"] ?? "",
+                        'createdAt': Timestamp.now(),
+                      });
+
+                      Navigator.pop(context);
+                    } on FirebaseAuthException catch (error) {
+                      if (error.code == 'email-already-in-use') {}
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: const Text("Signup Error"),
+                          content: Text(
+                            error.message ?? "An unknown error occurred.",
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(ctx).pop(),
+                              child: const Text("OK"),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(200, 50),

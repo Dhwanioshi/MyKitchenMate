@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:mykitchenapp/screens/Calendar/calendar.dart';
 import 'package:mykitchenapp/screens/Categories/category.dart';
@@ -37,68 +35,70 @@ class _NavigateState extends State<Navigate> {
       extendBody: true,
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
-  decoration: BoxDecoration(
-    gradient: LinearGradient(
-      begin: Alignment.bottomCenter,
-      end: Alignment.topCenter,
-      colors: [
-        const Color.fromARGB(255, 255, 255, 255),
-        const Color.fromARGB(121, 255, 255, 255),
-        const Color.fromARGB(18, 255, 255, 255),
-      ],
-    ),
-  ),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [
+              const Color.fromARGB(255, 255, 255, 255),
+              const Color.fromARGB(121, 255, 255, 255),
+              const Color.fromARGB(18, 255, 255, 255),
+            ],
+          ),
+        ),
         child: Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 20),
+          padding: const EdgeInsets.only(
+            left: 25,
+            right: 25,
+            top: 20,
+            bottom: 20,
+          ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(30),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: NavigationBar(
-                height: 65,
-                backgroundColor: const Color.fromRGBO(86, 106, 79, 1),
-                selectedIndex: _selectedIndex,
-                indicatorColor: Color.fromRGBO(86, 106, 79, 1),
-                onDestinationSelected: _onItemTapped,
-                labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-                destinations: [
-                  NavigationDestination(
-                    icon: Icon(
-                      Icons.calendar_month_outlined,
-                      color: _selectedIndex == 0 ? Colors.white : Colors.white38,
-                    ),
-                    label: '',
+            child: NavigationBar(
+              height: 50,
+              backgroundColor: const Color.fromRGBO(86, 106, 79, 1),
+              selectedIndex: _selectedIndex,
+              indicatorColor: Color.fromRGBO(86, 106, 79, 1),
+              onDestinationSelected: _onItemTapped,
+              labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+              destinations: [
+                NavigationDestination(
+                  icon: Icon(
+                    Icons.calendar_month_outlined,
+                    color: _selectedIndex == 0 ? Colors.white : Colors.white38,
                   ),
-                  NavigationDestination(
-                    icon: Icon(
-                      Icons.search,
-                      color: _selectedIndex == 1 ? Colors.white : Colors.white38,
-                    ),
-                    label: '',
+                  label: '',
+                ),
+                NavigationDestination(
+                  icon: Icon(
+                    Icons.search,
+                    color: _selectedIndex == 1 ? Colors.white : Colors.white38,
                   ),
-                  NavigationDestination(
-                    icon: Icon(
-                      Icons.home,
-                      color: _selectedIndex == 2 ? Colors.white : Colors.white38,
-                    ),
-                    label: '',
+                  label: '',
+                ),
+                NavigationDestination(
+                  icon: Icon(
+                    Icons.home,
+                    color: _selectedIndex == 2 ? Colors.white : Colors.white38,
                   ),
-                  NavigationDestination(
-                    icon: Icon(
-                      Icons.layers_outlined,
-                      color: _selectedIndex == 3 ? Colors.white : Colors.white38,
-                    ),
-                    label: '',
+                  label: '',
+                ),
+                NavigationDestination(
+                  icon: Icon(
+                    Icons.layers_outlined,
+                    color: _selectedIndex == 3 ? Colors.white : Colors.white38,
                   ),
-                  NavigationDestination(
-                    icon: Icon(
-                      Icons.person,
-                      color: _selectedIndex == 4 ? Colors.white : Colors.white38,
-                    ),
-                    label: '',
+                  label: '',
+                ),
+                NavigationDestination(
+                  icon: Icon(
+                    Icons.person,
+                    color: _selectedIndex == 4 ? Colors.white : Colors.white38,
                   ),
-                ],
-              ),
+                  label: '',
+                ),
+              ],
             ),
           ),
         ),
