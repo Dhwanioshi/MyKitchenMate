@@ -19,11 +19,6 @@
 
 ---
 
-## 📸 Screenshots
-
-> *(Add screenshots here once available)*
-
----
 
 ## 🛠️ Tech Stack
 
@@ -31,9 +26,6 @@
 - **Backend**: Firebase (Authentication & Firestore)
 - **State Management**: Riverpod
 - **Design**: Figma, Google Fonts
-
----
-
 
 ---
 
