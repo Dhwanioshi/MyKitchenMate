@@ -2,10 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mykitchenapp/bottom_navigation.dart';
+<<<<<<< HEAD
 import 'package:mykitchenapp/screens/splash.dart';
 import 'firebase_options.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+=======
+>>>>>>> 8b8153ca1276f27e3752d35282f36fcbdf46562c
 import 'package:mykitchenapp/screens/startup/intro_page.dart';
 
 void main() async {
@@ -37,6 +40,11 @@ void main() async {
           },
         ),
       ),
+<<<<<<< HEAD
+=======
+      home: IntroPage(),
+      home: Navigate(),
+>>>>>>> 8b8153ca1276f27e3752d35282f36fcbdf46562c
     ),
   );
 }

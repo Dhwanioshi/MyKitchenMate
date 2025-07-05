@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+=======
+<<<<<<< HEAD
+// import 'package:flutter/widgets.dart';
+import 'package:mykitchenapp/styling/navigation.dart';
+import 'package:mykitchenapp/screens/Trending_Page/trending_page.dart';
+=======
+>>>>>>> 8b8153ca1276f27e3752d35282f36fcbdf46562c
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mykitchenapp/dummy_data/sample_recipes.dart';
 import 'package:mykitchenapp/providers/favs.dart';
@@ -8,7 +16,11 @@ import 'package:mykitchenapp/screens/Trending_Page/trending_page.dart';
 import 'package:mykitchenapp/screens/settings/history.dart';
 import 'package:mykitchenapp/screens/splash.dart';
 import 'package:mykitchenapp/widgets/itemgrid.dart';
+<<<<<<< HEAD
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+=======
+>>>>>>> 1aac4bca0de443446338636aa90f5a60d6cc4d02
+>>>>>>> 8b8153ca1276f27e3752d35282f36fcbdf46562c
 
 final uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -24,6 +36,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     final favRecipes = ref.watch(favouritesProvider);
 
     // final String name = list["Full Name"]!;
@@ -46,6 +59,48 @@ class _HomePageState extends ConsumerState<HomePage> {
               padding: const EdgeInsets.symmetric(
                 vertical: 20.0,
                 horizontal: 20,
+=======
+    return Scaffold(
+<<<<<<< HEAD
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: appBarHeight),
+                const Text(
+                  "Hi! Dhwani",
+                  style: TextStyle(
+                    color: Color.fromRGBO(86, 106, 79, 1),
+                    fontSize: 25,
+                  ),
+                ),
+                const Text("What are you cooking today?"),
+                const SizedBox(height: 20),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TrendingRecipesPage(),
+                      ),
+                    );
+                  },
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+=======
+      appBar: AppBar(
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Hi! Dhwani",
+                style: TextStyle(color: Color.fromRGBO(86, 106, 79, 1)),
+>>>>>>> 8b8153ca1276f27e3752d35282f36fcbdf46562c
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,6 +117,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
             ),
           ),
+<<<<<<< HEAD
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,6 +134,30 @@ class _HomePageState extends ConsumerState<HomePage> {
                       height: 240,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+=======
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 30),
+            InkWell(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (ctx) => TrendingRecipesPage()),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: SizedBox(
+                  height: 240,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+>>>>>>> 1aac4bca0de443446338636aa90f5a60d6cc4d02
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+>>>>>>> 8b8153ca1276f27e3752d35282f36fcbdf46562c
                         children: [
                           Row(
                             mainAxisSize: MainAxisSize.min,
@@ -333,8 +413,103 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       ),
                                     ],
                                   ),
+<<<<<<< HEAD
                                 );
                               },
+=======
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              top: -4,
+                              left: 0,
+                              right: 0,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                elevation: 8,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image.network(
+                                    dummyRecipes[0].imagePath,
+                                    height: 140,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const Positioned(
+                              top: 10,
+                              right: 10,
+                              child: CircleAvatar(
+                                radius: 15,
+                                backgroundColor: Color.fromRGBO(86, 106, 79, 1),
+                                child: Icon(
+                                  Icons.favorite_border,
+                                  color: Color.fromRGBO(255, 255, 255, 1),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+<<<<<<< HEAD
+                Card(child: Image.asset('assets/images/Categories/Dinner.png')),
+              ],
+=======
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return History(
+                        title: "Your Recipes",
+                        listOfRecipes: dummyRecipes,
+                      );
+                    },
+                  ),
+                );
+              },
+              child: Container(
+                height: 255,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(235, 214, 185, 40),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Your Recipes",
+                            style: GoogleFonts.poppins(
+                              color: const Color.fromARGB(255, 255, 255, 255),
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            "See All ->",
+                            style: GoogleFonts.poppins(
+                              color: const Color.fromARGB(255, 255, 255, 255),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+>>>>>>> 8b8153ca1276f27e3752d35282f36fcbdf46562c
                             ),
                           ),
                         ],
@@ -342,6 +517,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                   ),
                 ),
+<<<<<<< HEAD
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -353,14 +529,37 @@ class _HomePageState extends ConsumerState<HomePage> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+=======
+              ),
+>>>>>>> 1aac4bca0de443446338636aa90f5a60d6cc4d02
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text(
+                "Recently Added",
+                style: GoogleFonts.poppins(
+                  color: const Color.fromRGBO(86, 106, 79, 1),
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+>>>>>>> 8b8153ca1276f27e3752d35282f36fcbdf46562c
                 ),
                 // const SizedBox(height: ),
                 Itemgrid(selectedRecipes: dummyRecipes, currentPage: "Home"),
               ],
             ),
+<<<<<<< HEAD
           ),
         );
       },
+=======
+            // const SizedBox(height: ),
+            Itemgrid(selectedRecipes: dummyRecipes, currentPage: "Home"),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Navigation(),
+>>>>>>> 8b8153ca1276f27e3752d35282f36fcbdf46562c
     );
   }
 }
