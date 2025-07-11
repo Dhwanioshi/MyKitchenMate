@@ -8,14 +8,10 @@ import 'package:mykitchenapp/widgets/appbar.dart';
 import 'package:mykitchenapp/widgets/text_enter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-
 final firebase = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;
 
-
 final uid = FirebaseAuth.instance.currentUser!.uid;
-
 
 class Signup extends ConsumerStatefulWidget {
   const Signup({super.key});
@@ -29,6 +25,7 @@ class _SignupState extends ConsumerState<Signup> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -87,59 +84,71 @@ class _SignupState extends ConsumerState<Signup> {
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    final list = ref.read(profileDitsProvider);
-                    try {
-                      final userCredential = await firebase
-                          .createUserWithEmailAndPassword(
-                            email: list["Email"]!,
-                            password: list["Password"]!,
-                          );
-                      final uid = userCredential.user!.uid;
-                      await firestore.collection('users').doc(uid).set({
-                        'name': list["Full Name"] ?? "",
-                        'email': list["Email"] ?? "",
-                        'username': list["Username"] ?? "",
-                        'DOB': list["Date Of Birth"] ?? "",
-                        'mobile_number': list["Mobile Number"] ?? "",
-                        'createdAt': Timestamp.now(),
-                      });
+                onPressed: isLoading
+                    ? null
+                    : () async {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          final list = ref.read(profileDitsProvider);
+                          setState(() {
+                            isLoading = true;
+                          });
 
-                      Navigator.pop(context);
-                    } on FirebaseAuthException catch (error) {
-                      if (error.code == 'email-already-in-use') {}
-                      showDialog(
-                        context: context,
-                        builder: (ctx) => AlertDialog(
-                          title: const Text("Signup Error"),
-                          content: Text(
-                            error.message ?? "An unknown error occurred.",
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(ctx).pop(),
-                              child: const Text("OK"),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  }
-                },
+                          try {
+                            final userCredential = await firebase
+                                .createUserWithEmailAndPassword(
+                                  email: list["Email"]!,
+                                  password: list["Password"]!,
+                                );
+                            final uid = userCredential.user!.uid;
+                            await firestore.collection('users').doc(uid).set({
+                              'name': list["Full Name"] ?? "",
+                              'email': list["Email"] ?? "",
+                              'username': list["Username"] ?? "",
+                              'DOB': list["Date Of Birth"] ?? "",
+                              'mobile_number': list["Mobile Number"] ?? "",
+                              'createdAt': Timestamp.now(),
+                            });
+
+                            Navigator.pop(context);
+                          } on FirebaseAuthException catch (error) {
+                            if (error.code == 'email-already-in-use') {}
+                            showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title: const Text("Signup Error"),
+                                content: Text(
+                                  error.message ?? "An unknown error occurred.",
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.of(ctx).pop(),
+                                    child: const Text("OK"),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } finally {
+                            setState(() => isLoading = false);
+                          }
+                        }
+                      },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(200, 50),
                   backgroundColor: const Color.fromRGBO(86, 106, 79, 1),
                 ),
-                child: Text(
-                  "Sign Up",
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 19,
-                  ),
-                ),
+                child: isLoading
+                    ? CircularProgressIndicator(
+                        color: Color.fromRGBO(86, 106, 79, 1),
+                      )
+                    : Text(
+                        "Sign Up",
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 19,
+                        ),
+                      ),
               ),
             ],
           ),

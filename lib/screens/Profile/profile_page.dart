@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mykitchenapp/dummy_data/sample_recipes.dart';
+import 'package:mykitchenapp/providers/favs.dart';
 import 'package:mykitchenapp/screens/Profile/edit_profile.dart';
 import 'package:mykitchenapp/screens/settings/history.dart';
 import 'package:mykitchenapp/screens/settings/setting.dart';
 import 'package:mykitchenapp/screens/splash.dart';
-import 'package:mykitchenapp/widgets/appbar.dart';
 
 final uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -30,7 +29,16 @@ class ProfilePage extends ConsumerWidget {
         final list = snapshot.data!.data() as Map<String, dynamic>;
         final String name = list['name'].toString();
         return Scaffold(
-          appBar: CustomAppbar("Profile"),
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text(
+              "Profile",
+              style: TextStyle(
+                color: Color.fromRGBO(86, 106, 79, 1),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
@@ -57,7 +65,7 @@ class ProfilePage extends ConsumerWidget {
                 const SizedBox(height: 12),
 
                 Text(
-                   name,
+                  name,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 const SizedBox(height: 30),
@@ -74,14 +82,14 @@ class ProfilePage extends ConsumerWidget {
                 ),
                 buildMenuTile(
                   icon: Icons.notifications_none,
-                  title: "History",
+                  title: "Your Recipes",
                   onTap: () {
+                     final favRecipes = ref.watch(favouritesProvider);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (ctx) => History(
-                          title: "History",
-                          listOfRecipes: dummyRecipes,
+                          listOfRecipes: favRecipes,
                         ),
                       ),
                     );

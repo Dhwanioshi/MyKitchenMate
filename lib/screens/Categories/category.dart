@@ -45,7 +45,16 @@ class _CategoryState extends State<Category> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(title),
+      appBar: AppBar(
+            centerTitle: true,
+            title: Text(
+              title,
+              style: TextStyle(
+                color: Color.fromRGBO(86, 106, 79, 1),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
       body: GridView(
         padding: const EdgeInsets.all(20),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

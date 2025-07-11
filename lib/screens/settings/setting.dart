@@ -21,6 +21,29 @@ class SettingsScreen extends StatelessWidget {
       {"icon": Icons.logout, "text": "Log Out"},
     ];
 
+    Future<void> reauthenticateAndDelete(String email, String password) async {
+      try {
+        final user = FirebaseAuth.instance.currentUser;
+
+        if (user != null) {
+          // Create a credential
+          final cred = EmailAuthProvider.credential(
+            email: email,
+            password: password,
+          );
+
+          // Reauthenticate
+          await user.reauthenticateWithCredential(cred);
+
+          // Now delete
+          await user.delete();
+          print("✅ Auth user deleted.");
+        }
+      } on FirebaseAuthException catch (e) {
+        print("❌ ${e.code}: ${e.message}");
+      }
+    }
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(248, 244, 235, 1),
       appBar: const CustomAppbar("Settings"),
@@ -38,10 +61,8 @@ class SettingsScreen extends StatelessWidget {
                         ? Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (ctx) => History(
-                                title: "History",
-                                listOfRecipes: dummyRecipes,
-                              ),
+                              builder: (ctx) =>
+                                  History(listOfRecipes: dummyRecipes),
                             ),
                           )
                         : item["text"] == "Language"
@@ -147,22 +168,29 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () async {
-
-                          final uid = FirebaseAuth.instance.currentUser!.uid;
-                          await FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(uid)
-                              .delete();
                           final user = FirebaseAuth.instance.currentUser;
-                          await user?.delete();
-                          await FirebaseAuth.instance.signOut();
+                          final uid = user?.uid;
 
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (ctx) => const IntroPage(),
-                            ),
-                          );
+                          if (uid != null) {
+                            await FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(uid)
+                                .delete();
+
+                            // Ask for email & password again via a dialog or form
+                            await reauthenticateAndDelete(
+                              user!.email!,
+                              "userPasswordHere",
+                            ); // Replace with actual input
+
+                            await FirebaseAuth.instance.signOut();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const IntroPage(),
+                              ),
+                            );
+                          }
                         },
                         child: Text(
                           "Delete",

@@ -23,6 +23,7 @@ class _LoginState extends ConsumerState<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -75,49 +76,62 @@ class _LoginState extends ConsumerState<Login> {
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () async {
-                  try {
-                    final UserCredentials = await firebase
-                        .signInWithEmailAndPassword(
-                          email: emailController.text,
-                          password: passwordController.text,
-                        );
+                onPressed: isLoading
+                    ? null
+                    : () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        try {
+                          final UserCredentials = await firebase
+                              .signInWithEmailAndPassword(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              );
 
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => Navigate()),
-                      (route) => false,
-                    );
-                  } on FirebaseAuthException catch (error) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text("Enter Login Details"),
-                        content: const Text(
-                          "Please enter correct login details",
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text("OK"),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                },
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => Navigate()),
+                            (route) => false,
+                          );
+                        } on FirebaseAuthException catch (error) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text("Enter Login Details"),
+                              content: const Text(
+                                "Please enter correct login details",
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text("OK"),
+                                ),
+                              ],
+                            ),
+                          );
+                        } finally {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }
+                      },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(200, 50),
                   backgroundColor: const Color.fromRGBO(86, 106, 79, 1),
                 ),
-                child: Text(
-                  "Log In",
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 19,
-                  ),
-                ),
+                child: isLoading
+                    ? CircularProgressIndicator(
+                        color: Color.fromRGBO(86, 106, 79, 1),
+                      )
+                    : Text(
+                        "Log In",
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 19,
+                        ),
+                      ),
               ),
               const SizedBox(height: 30),
               ElevatedButton(
