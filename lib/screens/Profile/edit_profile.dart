@@ -19,6 +19,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   late final TextEditingController phoneController = TextEditingController();
   late final TextEditingController emailController = TextEditingController();
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
@@ -28,11 +30,15 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
           .get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
 
         if (snapshot.hasError || !snapshot.hasData || !snapshot.data!.exists) {
-          return const Scaffold(body: Center(child: Text("Failed to load user data.")));
+          return const Scaffold(
+            body: Center(child: Text("Failed to load user data.")),
+          );
         }
 
         final data = snapshot.data!.data() as Map<String, dynamic>;
@@ -55,10 +61,13 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                   const SizedBox(height: 10),
                   _buildTextField('Username', usernameController),
                   const SizedBox(height: 16),
-                  _buildTextField('Mobile Number', phoneController,
-                      keyboardType: TextInputType.phone),
+                  _buildTextField(
+                    'Mobile Number',
+                    phoneController,
+                    keyboardType: TextInputType.phone,
+                  ),
                   const SizedBox(height: 16),
-                  
+
                   const SizedBox(height: 32),
                   SizedBox(
                     height: 48,
@@ -69,24 +78,30 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          final uid = FirebaseAuth.instance.currentUser!.uid;
+                      onPressed: isLoading
+                          ? null
+                          : () async {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                final uid =
+                                    FirebaseAuth.instance.currentUser!.uid;
+                                    setState(() {
+                                      isLoading = true;
+                                    });
 
-                          await FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(uid)
-                              .update({
-                            'name': nameController.text,
-                            'username': usernameController.text,
-                            'mobile_number': phoneController.text,
-                          });
-
-                          Navigator.pop(context);
-                        }
-                      },
-                      child: const Text(
+                                await FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(uid)
+                                    .update({
+                                      'name': nameController.text,
+                                      'username': usernameController.text,
+                                      'mobile_number': phoneController.text,
+                                    });
+                                isLoading = false;
+                                Navigator.pop(context);
+                              }
+                            },
+                      child: isLoading ? CircularProgressIndicator(color: Color.fromRGBO(86, 106, 79, 1),) : const Text(
                         'Save',
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
@@ -109,16 +124,23 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+        Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+        ),
         const SizedBox(height: 6),
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
           validator: (value) {
-            if (value == null || value.isEmpty || value.length <= 1 || value.length >= 50) {
+            if (value == null ||
+                value.isEmpty ||
+                value.length <= 1 ||
+                value.length >= 50) {
               return 'Enter a valid $label';
             }
-            if (label == "Email" && (!value.contains('@') || !value.contains("gmail.com"))) {
+            if (label == "Email" &&
+                (!value.contains('@') || !value.contains("gmail.com"))) {
               return "Enter correct Email address";
             }
             if (label == "Mobile Number" && value.length != 10) {
@@ -129,7 +151,10 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
           decoration: InputDecoration(
             filled: true,
             fillColor: const Color.fromARGB(100, 160, 160, 150),
-            contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 12,
+              horizontal: 12,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide.none,
